@@ -2,7 +2,7 @@
   "name": "node_blog",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon --exec babel-node src/server.js",
     "start": "npm-run-all build server",
