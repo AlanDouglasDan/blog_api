@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec babel-node src/server.js",
-    "start": "npm-run-all build server"
+    "start": "npm-run-all build server",
+    "build": "npm-run-all clean transpile",
+    "server": "node dist/server.js",
+    "transpile": "babel src -d dist",
+    "clean": "rimraf dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
