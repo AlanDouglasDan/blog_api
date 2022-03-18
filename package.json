@@ -26,6 +26,10 @@
     "express-jwt": "^6.1.1",
     "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.6"
+    "moment": "^2.29.1",
+    "mongoose": "^6.2.6",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7",
+    "winston": "^3.6.0"
   }
 }
