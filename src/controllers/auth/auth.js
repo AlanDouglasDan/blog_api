@@ -43,8 +43,8 @@ const login = async (req, res) => {
     try{
         const details = {
             Collection: User,
-            // find: { $or: [ {email: username}, {phone: username} ] },
-            find: { email: username }
+            find: { $or: [ {email: username}, {phone: username} ] },
+            // find: { email: username }
         };
 
         const foundUser = await getItem(details);
@@ -59,8 +59,13 @@ const login = async (req, res) => {
 
         const token = utilities.generateLoginToken(foundUser, null);
 
-        res.cookie('auth_token', token, { httpOnly: true });
-        res.status(200).json(new Response('login successful', token));
+        res
+		.status(202)
+		.cookie('auth_token', token, {
+			sameSite: 'strict',
+			path: '/',
+            httpOnly: true,
+		}).json(new Response('login successful', token));
     }
     catch(err){
         logger.error(err);
