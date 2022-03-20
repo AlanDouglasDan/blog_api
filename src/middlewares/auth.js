@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
+import { getItem } from '../db/db_queries';
 import { Response, logger } from '../helpers';
+import { User } from '../models';
 
-const isLoggedIn = (req, res, next) => {
+const isLoggedIn = async (req, res, next) => {
     const key = process.env.JWT_SECRET || 'mysecret';
 
     try {
@@ -12,6 +14,16 @@ const isLoggedIn = (req, res, next) => {
         const decoded = jwt.verify(tokenBearer, key);
     
         if (decoded) {
+            const details = {
+                Collection: User,
+                find: { _id: decoded._id }
+            }
+
+            const ie = await getItem(details);
+            if(!ie){
+                return res.status(401).json(new Response('This user does not exist'));
+            }
+            
             req.userLoggedIn = decoded;
             next();
         }

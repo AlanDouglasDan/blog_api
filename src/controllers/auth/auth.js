@@ -1,5 +1,5 @@
 import { Response, logger, decode } from '../../helpers';
-import { User } from '../../models';
+import { User, Follower } from '../../models';
 import { addItem, getAllItems, getItem } from '../../db/db_queries';
 import utilities from '../../utilities';
 
@@ -25,6 +25,16 @@ const register = async (req, res) => {
 
         details.data = req.body;
         const result = await addItem(details);
+
+        const follower_details = {
+            Collection: Follower,
+            data: {
+                user: result._id,
+                followers: [],
+                followings: []
+            }
+        }
+        const add = await addItem(follower_details);
 
         res.status(200).json(new Response('account successfully created', result));
     } catch (err) {

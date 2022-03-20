@@ -3,6 +3,7 @@ import jsonwebtoken from "jsonwebtoken";
 import jwt from "express-jwt";
 import authRoutes from "./auth-routes";
 import articleRoutes from "./article-routes";
+import followRoutes from "./follow-routes";
 
 const router = Router();
 
@@ -18,6 +19,7 @@ router.get('/logout', (req, res) => {
 
 router.use("/auth", authRoutes);
 router.use("/api/article", articleRoutes);
+router.use('/api/follow', followRoutes);
 
 router.use((req, res, next) => {
     const error = new Error("No resource was found");
