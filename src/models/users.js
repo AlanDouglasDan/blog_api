@@ -6,7 +6,8 @@ const userSchema = new Schema({
   password: String,
   firstName: String,
   lastName: String,
-  phone: String,  
+  phone: String,
+  savedItems: { type: Array, required: true},
 }, { timestamps: true });
 
 userSchema.pre('save', function generateHash(next) {

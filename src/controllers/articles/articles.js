@@ -56,8 +56,11 @@ const updateArticle = async (req, res) => {
             article = await getItem(article_details);
         }
         catch (err){
-            logger.error(err);
             return res.status(401).json(new Response('Invalid article'));
+        }
+
+        if(!article){
+            return res.status(403).json(new Response('Article does nott exist'));
         }
         
         if(user_id != article.author){
@@ -92,8 +95,11 @@ const deleteArticle = async (req, res) => {
             article = await getItem(article_details);
         }
         catch (err){
-            logger.error(err);
             return res.status(401).json(new Response('Invalid article'));
+        }
+
+        if(!article){
+            return res.status(403).json(new Response('Article does nott exist'));
         }
         
         if(user_id != article.author){
