@@ -7,7 +7,7 @@ const isLoggedIn = async (req, res, next) => {
     const key = process.env.JWT_SECRET || 'mysecret';
 
     try {
-        const authorization = req.cookies.token;
+        const { authorization } = req.headers;
         if (!authorization) throw new Error('No authorization header');
     
         const tokenBearer = authorization.split(' ')[1];

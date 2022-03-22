@@ -7,19 +7,26 @@ const saveArticle = async (req, res) => {
     const user_id = userLoggedIn._id;
     const { type, id } = req.body;
     try {
-        // const details = {
-        //     Colletion: User,
-        //     find: { _id: user_id }
-        // };
-        // const foundUser = await getItem(details);
-
         const details = {
             Collection: User,
             find: { _id: user_id },
         };
         const foundUser = await getItem(details);
 
-        return res.status(200).json(new Response('Successful response', foundUser));
+        const article_details = {
+            Collection: Article,
+            find: { _id: id },
+        }
+
+        let foundArticle;        
+        try{
+            foundArticle = await getItem(article_details);
+        }
+        catch(err){
+            return res.status(403).json(new Response('Invalid article or the article does not exist', err));
+        }
+
+        return res.status(200).json(new Response('Successful response', foundArticle));
     } catch (err) {
         logger.error(err);
         return res.status(500).json(new Response('An error occured while trying to save article', err));
