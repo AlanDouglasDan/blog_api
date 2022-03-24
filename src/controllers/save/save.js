@@ -1,5 +1,5 @@
 import { Article, User  } from '../../models';
-import { addItem, getAllItems, getItem, updateItem, deleteItem } from '../../db/db_queries';
+import { getItem, updateItem } from '../../db/db_queries';
 import { Response, logger } from '../../helpers';
 
 const saveArticle = async (req, res) => {
@@ -60,4 +60,35 @@ const saveArticle = async (req, res) => {
     }
 }
 
-export { saveArticle };
+const getSavedArticles = async (req, res) => {
+    try {
+        const userLoggedIn = req.userLoggedIn;
+        const { _id } = userLoggedIn;
+
+        const details = {
+            Collection: User,
+            find: { _id },
+        }
+        const user_details = await getItem(details);
+        const savedItems = user_details.savedItems;
+        let fetched_list = [];
+        let article_details, alan;
+
+        for(let article of savedItems){
+            article_details = {
+                Collection: Article,
+                find: { _id: article },
+            };
+            alan = await getItem(article_details);
+            fetched_list.push(alan);
+        }
+        fetched_list.reverse();
+
+        return res.status(200).json(new Response('saved articles fetched successfully', fetched_list));
+    } catch (err) {
+        logger.error(err);
+        res.status(500).json(new Response('An error occured while fetching a list of all saved articles', err));
+    }
+}
+
+export { saveArticle, getSavedArticles };

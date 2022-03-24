@@ -32,8 +32,19 @@ const createArticle = async (req, res) => {
 }
 
 const getAllArticles = async (req, res) => {
-    const userLoggedIn = req.userLoggedIn;
-    res.status(200).json(new Response('article successfully created', userLoggedIn));
+    try{
+        const userLoggedIn = req.userLoggedIn;
+        const details = {
+            Collection: Article,
+            sort: { createdAt: -1 },
+        }
+        const articles = await getAllItems(details);
+        res.status(200).json(new Response('articles successfully retrieved', articles));
+    }
+    catch(err){
+        logger.error(err);
+        res.status(500).json(new Response('An error occured fetching the articles', err));
+    }
 }
 
 const updateArticle = async (req, res) => {

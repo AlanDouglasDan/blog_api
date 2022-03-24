@@ -8,4 +8,7 @@ const router = Router();
 // save or unsave article
 router.post('/toggle', auth.isLoggedIn, saveController.saveArticle);
 
+// get all saved articles
+router.get('/fetch', auth.isLoggedIn, saveController.getSavedArticles);
+
 export default router;
