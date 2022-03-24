@@ -71,11 +71,7 @@ const login = async (req, res) => {
 
         res
 		.status(202)
-		.cookie('auth_token', token, {
-			path: '/',
-            httpOnly: true,
-            secure: true,
-		}).json(new Response('login successful', token));
+        .json(new Response('login successful', token));
     }
     catch(err){
         logger.error(err);
