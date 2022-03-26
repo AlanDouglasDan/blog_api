@@ -3,6 +3,7 @@ import authRoutes from "./auth-routes";
 import articleRoutes from "./article-routes";
 import followRoutes from "./follow-routes";
 import saveRoutes from './save-routes';
+import commentRoutes from './comment-routes';
 
 const router = Router();
 
@@ -18,6 +19,7 @@ router.use("/auth", authRoutes);
 router.use("/api/article", articleRoutes);
 router.use('/api/follow', followRoutes);
 router.use('/api/bookmark', saveRoutes);
+router.use('/api/comment', commentRoutes);
 
 router.use((req, res, next) => {
     const error = new Error("No resource was found");
