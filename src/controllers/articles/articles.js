@@ -42,20 +42,20 @@ const getAllArticles = async (req, res) => {
         const list = [];
 
         for(let article of articles){
-            const { author } = article;
+            const { author, title, body, createdAt } = article;
+
             const user_details = {
                 Collection: User,
                 find: { _id: author },
             }
             const foundUser = await getItem(user_details);
             const name = `${foundUser.firstName} ${foundUser.lastName}`;
-            const { title, body, createdAt } = article;
             const payload = {
                 'name': name,
                 'title': title,
                 'body': body,
                 'date': createdAt
-            }
+            };
             list.push(payload);
         }
         res.status(200).json(new Response('articles successfully retrieved', list));
@@ -63,6 +63,36 @@ const getAllArticles = async (req, res) => {
     catch(err){
         logger.error(err);
         res.status(500).json(new Response('An error occured fetching the articles', err));
+    }
+}
+
+const getSpecificArticle = async (req, res) => {
+    try {
+        const { userLoggedIn } = req;
+        const { id } = req.params;
+
+        const details = {
+            Collection: Article,
+            find: { _id: id },
+        }
+        const article = await getItem(details);
+        const { author, title, body, createdAt } = article;
+        const user_details = {
+            Collection: User,
+            find: { _id: author },
+        }
+        const foundUser = await getItem(user_details);
+        const name = `${foundUser.firstName} ${foundUser.lastName}`;
+        const payload = {
+            'name': name,
+            'title': title,
+            'body': body,
+            'date': createdAt
+        };
+        return res.status(200).json(new Response('Article retrieved successfully', payload));
+    } catch (err) {
+        logger.error(err);
+        return res.status(500).json(new Response('An error occured', err));
     }
 }
 
@@ -145,4 +175,4 @@ const deleteArticle = async (req, res) => {
     }
 }
 
-export { createArticle, getAllArticles, updateArticle, deleteArticle };
+export { createArticle, getAllArticles, updateArticle, deleteArticle, getSpecificArticle };

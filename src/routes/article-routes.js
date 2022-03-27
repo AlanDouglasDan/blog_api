@@ -8,6 +8,9 @@ const router = Router();
 // get all articles
 router.get('/all', auth.isLoggedIn, articlesController.getAllArticles);
 
+// get an article
+router.get('/one/:id', auth.isLoggedIn, articlesController.getSpecificArticle);
+
 // post an article
 router.post('/add', auth.isLoggedIn, articlesController.createArticle);
 

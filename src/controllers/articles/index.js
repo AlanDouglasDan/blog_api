@@ -3,6 +3,7 @@ import {
     getAllArticles,
     updateArticle,
     deleteArticle,
+    getSpecificArticle,
 } from './articles';
 
 export default {
@@ -10,4 +11,5 @@ export default {
     getAllArticles,
     updateArticle,
     deleteArticle,
+    getSpecificArticle,
 }
