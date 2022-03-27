@@ -1,4 +1,4 @@
-import { Article  } from '../../models';
+import { Article, User } from '../../models';
 import { addItem, getAllItems, getItem, updateItem, deleteItem } from '../../db/db_queries';
 import { Response, logger } from '../../helpers';
 
@@ -39,7 +39,26 @@ const getAllArticles = async (req, res) => {
             sort: { createdAt: -1 },
         }
         const articles = await getAllItems(details);
-        res.status(200).json(new Response('articles successfully retrieved', articles));
+        const list = [];
+
+        for(let article of articles){
+            const { author } = article;
+            const user_details = {
+                Collection: User,
+                find: { _id: author },
+            }
+            const foundUser = await getItem(user_details);
+            const name = `${foundUser.firstName} ${foundUser.lastName}`;
+            const { title, body, createdAt } = article;
+            const payload = {
+                'name': name,
+                'title': title,
+                'body': body,
+                'date': createdAt
+            }
+            list.push(payload);
+        }
+        res.status(200).json(new Response('articles successfully retrieved', list));
     }
     catch(err){
         logger.error(err);
